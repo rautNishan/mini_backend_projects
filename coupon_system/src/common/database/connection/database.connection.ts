@@ -14,8 +14,8 @@ export class DatabaseConnection implements TypeOrmOptionsFactory {
       username: this._configService.get<string>('data_base_userName'),
       password: this._configService.get<string>('data_base_password'),
       database: this._configService.get<string>('data_base_name'),
-      entities: [__dirname + '../../../**/*.entity{.ts,.js}'],
-      migrations: [__dirname + '../migrations/*{.ts,.js}'],
+      entities: [__dirname + '/../../../**/*entity{.ts,.js}'],
+      migrations: [__dirname + '/../migrations/*{.ts,.js}'],
     };
   }
 }

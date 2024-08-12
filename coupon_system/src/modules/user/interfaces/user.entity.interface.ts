@@ -1,0 +1,15 @@
+import { USER_TYPE } from 'src/common/constants/user-type/user.type.constant';
+
+export interface IFullName {
+  firstName: string;
+  middleName?: string | null;
+  lastName: string;
+}
+
+export interface IUserEntity {
+  fullName: IFullName;
+  email: string;
+  contactNumber: string;
+  userType: USER_TYPE;
+  //   userName: string;
+}
