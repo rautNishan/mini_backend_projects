@@ -1,5 +1,5 @@
 import { DataBaseBaseEntity } from 'src/common/database/base/entity/base.entity';
-import { IFullName, IUserEntity } from '../interfaces/user.entity.interface';
+import { IFullName, IUser } from '../interfaces/user.entity.interface';
 import { USER_TYPE } from 'src/common/constants/user-type/user.type.constant';
 import { Column, Entity } from 'typeorm';
 
@@ -11,7 +11,7 @@ export class UserFullName implements IFullName {
 
 export const USER_TABLE_NAME = 'users';
 @Entity({ name: USER_TABLE_NAME })
-export class UserEntity extends DataBaseBaseEntity implements IUserEntity {
+export class UserEntity extends DataBaseBaseEntity implements IUser {
   @Column({ name: 'full_name', type: 'jsonb', nullable: false })
   fullName: UserFullName;
 

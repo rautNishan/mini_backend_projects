@@ -6,10 +6,10 @@ export interface IFullName {
   lastName: string;
 }
 
-export interface IUserEntity {
+export interface IUser {
   fullName: IFullName;
   email: string;
   contactNumber: string;
-  userType: USER_TYPE;
+  userType?: USER_TYPE;
   //   userName: string;
 }
