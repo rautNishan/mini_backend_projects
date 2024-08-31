@@ -5,7 +5,7 @@ import { swaggerSetup } from './swagger';
 
 async function bootstrap() {
   const app: INestApplication<any> = await NestFactory.create(AppModule);
-  const port = 9000;
+  const port = 3000;
   const host = 'localhost';
   app.useGlobalPipes(new ValidationPipe());
   swaggerSetup(app);

@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiDoc } from 'src/common/docs/decorators/doc.decorator';
 import { UserCreateDto } from '../dtos/user.create.dto';
+import { UserProtected } from 'src/common/request/decorators/request.user-protected.decorator';
 
 @ApiTags('User')
 @Controller({
@@ -21,6 +22,7 @@ export class UserAdminController {
   @ApiDoc({
     operation: 'Create new User',
   })
+  @UserProtected()
   @Post('/create')
   async create(@Body() createData: UserCreateDto) {
     console.log('This is createData: ', createData);
