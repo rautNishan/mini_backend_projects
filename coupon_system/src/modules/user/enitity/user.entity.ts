@@ -29,4 +29,7 @@ export class UserEntity extends DataBaseBaseEntity implements IUser {
     default: USER_TYPE.USER,
   })
   userType: USER_TYPE;
+
+  @Column({ name: 'password', type: 'varchar', nullable: false })
+  password: string;
 }

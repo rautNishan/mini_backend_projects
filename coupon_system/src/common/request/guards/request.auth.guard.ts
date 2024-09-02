@@ -5,16 +5,13 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/services/request.auth.service';
+import { IUserPayload } from '../auth/interfaces/auth.interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly _authService: AuthService;
-
-  constructor() {
-    this._authService = new AuthService();
-  }
+  constructor(private readonly _jwtService: JwtService) {}
 
   canActivate(
     context: ExecutionContext,
@@ -27,7 +24,12 @@ export class AuthGuard implements CanActivate {
     if (!incomingToken) {
       throw new HttpException('Not Authenticated', HttpStatus.FORBIDDEN);
     }
+    //decode token
 
+    const decodedToken: IUserPayload = this._jwtService.decode(incomingToken);
+    console.log('This is decoded token: ', decodedToken);
+
+    this.checkAuthorized(requestPath, decodedToken.role);
     return true;
   }
 

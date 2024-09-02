@@ -9,7 +9,10 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { IFullName, IUser } from '../interfaces/user.entity.interface';
+import {
+  IFullName,
+  IUser,
+} from 'src/modules/user/interfaces/user.entity.interface';
 
 export class FullNameDto implements IFullName {
   @ApiProperty({
