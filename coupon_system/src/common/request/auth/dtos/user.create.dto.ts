@@ -71,4 +71,13 @@ export class UserCreateDto implements IUser {
     example: '9090909090',
   })
   contactNumber: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    required: true,
+    description: 'User Password.',
+    example: 'password',
+  })
+  password: string;
 }

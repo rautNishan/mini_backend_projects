@@ -11,5 +11,6 @@ export interface IUser {
   email: string;
   contactNumber: string;
   userType?: USER_TYPE;
+  password: string;
   //   userName: string;
 }

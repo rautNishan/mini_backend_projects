@@ -3,6 +3,8 @@ import { DeepPartial, Repository } from 'typeorm';
 import { DataBaseBaseEntity } from '../entity/base.entity';
 import {
   IBaseRepositoryInterface,
+  IEntityManager,
+  IFindOneOptions,
   ISaveOptions,
 } from './interfaces/base.repository.interface';
 
@@ -14,7 +16,7 @@ export class BaseRepository<T extends DataBaseBaseEntity>
 
   async create(data: DeepPartial<T>, options?: ISaveOptions): Promise<T> {
     let newlyCreatedEntity: T;
-    if (options.entityManager) {
+    if (options?.entityManager) {
       newlyCreatedEntity = options.entityManager.create(
         this._repo.target,
         data,
@@ -23,5 +25,18 @@ export class BaseRepository<T extends DataBaseBaseEntity>
     }
     newlyCreatedEntity = this._repo.create(data);
     return await this._repo.save(newlyCreatedEntity);
+  }
+
+  async findOne(
+    find: IFindOneOptions,
+    options?: IEntityManager,
+  ): Promise<T | null> {
+    if (options?.entityManager) {
+      return await options.entityManager.findOne(
+        this._repo.target,
+        find.findOneOptions,
+      );
+    }
+    return this._repo.findOne(find.findOneOptions);
   }
 }

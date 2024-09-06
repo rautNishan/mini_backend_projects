@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiDoc } from 'src/common/docs/decorators/doc.decorator';
 import { UserCreateDto } from 'src/common/request/auth/dtos/user.create.dto';
-import { UserService } from '../services/user.service';
+import { UserProtected } from 'src/common/request/decorators/request.user-protected.decorator';
+import { AbstractUserService } from '../abstract/user.service.abstract';
 
 @ApiTags('User')
 @Controller({
@@ -10,20 +11,22 @@ import { UserService } from '../services/user.service';
   version: '1.0',
 })
 export class UserAdminController {
-  constructor(private readonly _userService: UserService) {}
-
-  @ApiDoc({})
-  @Get('')
-  async getUser() {
-    return await this._userService.getUser();
-  }
+  constructor(private readonly _userService: AbstractUserService) {}
 
   @ApiDoc({
     operation: 'Create new User',
   })
-  // @UserProtected()
+  @UserProtected()
   @Post('/create')
   async create(@Body() createData: UserCreateDto) {
-    console.log('This is createData: ', createData);
+    return await this._userService.create(createData);
+  }
+
+  @Get('/:id')
+  // @UserProtected()
+  //todo make ParamGuard
+  getById(@Param('id') id: number) {
+    console.log('This is Id: ', id);
+    console.log('Type of id: ', typeof id);
   }
 }

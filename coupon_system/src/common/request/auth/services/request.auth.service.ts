@@ -1,16 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AbstractUserService } from 'src/modules/user/abstract/user.service.abstract';
 import { UserEntity } from 'src/modules/user/enitity/user.entity';
-import { UserLoginDto } from '../dtos/user.login.dto';
 import { UserCreateDto } from '../dtos/user.create.dto';
+import { UserLoginDto } from '../dtos/user.login.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly _jwtService: JwtService) {}
+  constructor(
+    private readonly _jwtService: JwtService,
+    private readonly _userService: AbstractUserService,
+  ) {}
 
-  async login(incomingUser: UserLoginDto, existingUser: UserEntity) {
-    console.log('This is incoming user: ', incomingUser);
-    console.log('This is existing user: ', existingUser);
+  async login(incomingUser: UserLoginDto) {
+    const existingUser: UserEntity = await this._userService.findOneUserOrFail({
+      findOneOptions: {
+        where: { email: incomingUser.email },
+      },
+    });
+    console.log('This is Existing User: ', existingUser);
+
+    return 'token';
   }
 
   async checkAuth() {}
