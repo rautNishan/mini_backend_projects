@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
 import { configs } from './common/configs/config';
-import { DatabaseModule } from './common/database/database.module';
 import { CustomRouterModule } from './router/router.module';
 
 @Module({
@@ -12,7 +12,7 @@ import { CustomRouterModule } from './router/router.module';
       isGlobal: true,
       load: configs,
     }),
-    DatabaseModule,
+    CommonModule,
   ],
 })
 export class AppModule {
