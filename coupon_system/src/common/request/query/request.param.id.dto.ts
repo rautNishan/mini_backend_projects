@@ -4,6 +4,6 @@ import { IsInt, IsNotEmpty } from 'class-validator';
 export class RequestIdDto {
   @IsInt()
   @IsNotEmpty()
-  @Transform((value) => Number(value))
+  @Transform(({ value }) => Number(value))
   id: number;
 }
