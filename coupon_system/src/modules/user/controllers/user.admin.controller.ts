@@ -25,10 +25,13 @@ export class UserAdminController {
   }
 
   @Get('/:id')
-  @UserProtected()
+  // @UserProtected()
   @RequestParamGuard(RequestIdDto)
-  getById(@Param('id') id: number) {
-    console.log('This is Id: ', id);
-    console.log('Type of id: ', typeof id);
+  async getById(@Param('id') id: number) {
+    return await this._userService.findOneByIdOrFail(id, {
+      findOneOptions: {
+        select: ['id', 'fullName', 'contactNumber'],
+      },
+    });
   }
 }

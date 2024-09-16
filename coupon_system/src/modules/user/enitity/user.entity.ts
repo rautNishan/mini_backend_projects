@@ -1,4 +1,4 @@
-import { DataBaseBaseEntity } from 'src/common/database/base/entity/base.entity';
+import { DataBaseBaseEntity } from 'src/common/database/postgres/base/entity/base.entity';
 import { IFullName, IUser } from '../interfaces/user.entity.interface';
 import { USER_TYPE } from 'src/common/constants/user-type/user.type.constant';
 import { Column, Entity } from 'typeorm';

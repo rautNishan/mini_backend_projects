@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
   IEntityManager,
   IFindOneOptions,
-} from 'src/common/database/base/repository/interfaces/base.repository.interface';
+} from 'src/common/database/postgres/base/repository/interfaces/base.repository.interface';
 import { DeepPartial } from 'typeorm';
 import { UserEntity } from '../enitity/user.entity';
 import { UserRepository } from '../repository/user.repository';
@@ -35,7 +35,7 @@ export class UserService extends AbstractUserService {
   }
 
   async findOneOrNull(
-    findOneOptions: IFindOneOptions,
+    findOneOptions: IFindOneOptions<UserEntity>,
     options?: IEntityManager,
   ): Promise<UserEntity | null> {
     return await this._userRepository.findOne(findOneOptions, options);
@@ -54,13 +54,24 @@ export class UserService extends AbstractUserService {
   }
 
   async findOneUserOrFail(
-    findOneOptions: IFindOneOptions,
+    findOneOptions: IFindOneOptions<UserEntity>,
     options?: IEntityManager,
   ): Promise<UserEntity> {
     const existingUser: UserEntity = await this._userRepository.findOne(
       findOneOptions,
       options,
     );
+    if (!existingUser) {
+      throw new HttpException('Invalid user', HttpStatus.NOT_FOUND);
+    }
+    return existingUser;
+  }
+
+  async findOneByIdOrFail(
+    id: number,
+    options?: IFindOneOptions<UserEntity>,
+  ): Promise<UserEntity> {
+    const existingUser = await this._userRepository.findOneById(id, options);
     if (!existingUser) {
       throw new HttpException('Invalid user', HttpStatus.NOT_FOUND);
     }

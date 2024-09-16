@@ -28,7 +28,7 @@ export class BaseRepository<T extends DataBaseBaseEntity>
   }
 
   async findOne(
-    find: IFindOneOptions,
+    find: IFindOneOptions<T>,
     options?: IEntityManager,
   ): Promise<T | null> {
     if (options?.entityManager) {
@@ -38,5 +38,25 @@ export class BaseRepository<T extends DataBaseBaseEntity>
       );
     }
     return this._repo.findOne(find.findOneOptions);
+  }
+
+  async findOneById(id: number, options?: IFindOneOptions<T>) {
+    try {
+      const where: any = {};
+      where['id'] = Number(id);
+      if (options?.entityManager) {
+        return await options.entityManager.findOne(this._repo.target, {
+          where: { ...where },
+          ...options.findOneOptions,
+        });
+      }
+
+      return this._repo.findOne({
+        where: { ...where },
+        ...options.findOneOptions,
+      });
+    } catch (error) {
+      console.log('This is Error: ', error);
+    }
   }
 }

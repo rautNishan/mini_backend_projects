@@ -1,7 +1,7 @@
 import {
   IEntityManager,
   IFindOneOptions,
-} from 'src/common/database/base/repository/interfaces/base.repository.interface';
+} from 'src/common/database/postgres/base/repository/interfaces/base.repository.interface';
 import { UserEntity } from '../enitity/user.entity';
 import { DeepPartial } from 'typeorm';
 
@@ -27,7 +27,12 @@ export abstract class AbstractUserService {
   ): Promise<UserEntity>;
 
   abstract findOneUserOrFail(
-    findOneOptions: IFindOneOptions,
+    findOneOptions: IFindOneOptions<UserEntity>,
     options?: IEntityManager,
+  ): Promise<UserEntity>;
+
+  abstract findOneByIdOrFail(
+    id: number,
+    options?: IFindOneOptions<UserEntity>,
   ): Promise<UserEntity>;
 }

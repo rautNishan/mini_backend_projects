@@ -19,7 +19,6 @@ export class ResponseInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     if (context.getType() === 'http') {
-      console.log('Yes Context Type is Http');
       return next.handle().pipe(
         map(async (res: any) => {
           const ctx = context.switchToHttp();

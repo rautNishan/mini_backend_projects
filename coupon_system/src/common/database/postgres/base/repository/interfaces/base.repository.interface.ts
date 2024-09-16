@@ -2,7 +2,10 @@ import { EntityManager, FindOneOptions } from 'typeorm';
 
 export interface IBaseRepositoryInterface<T> {
   create(data: any, options: any): Promise<T>;
-  findOne(find: IFindOneOptions, options?: IEntityManager): Promise<T | null>;
+  findOne(
+    find: IFindOneOptions<T>,
+    options?: IEntityManager,
+  ): Promise<T | null>;
 }
 
 export interface ISaveOptions {
@@ -12,6 +15,7 @@ export interface ISaveOptions {
 export interface IEntityManager {
   entityManager: EntityManager;
 }
-export interface IFindOneOptions {
-  findOneOptions: FindOneOptions;
+export interface IFindOneOptions<T> {
+  findOneOptions: FindOneOptions<T>;
+  entityManager?: EntityManager;
 }

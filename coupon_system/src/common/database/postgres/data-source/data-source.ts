@@ -12,7 +12,7 @@ const dataSource = (): DataSource => {
     password: process.env.DATA_BASE_PASSWORD,
     logging: true,
     database: process.env.DATA_BASE_NAME,
-    entities: [__dirname + '/../../../**/*entity{.ts,.js}'],
+    entities: [__dirname + '/../../../../**/*entity{.ts,.js}'],
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
   });
 };
