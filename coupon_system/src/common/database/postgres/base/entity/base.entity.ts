@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
@@ -6,7 +7,7 @@ import {
 } from 'typeorm';
 import { IBaseEntity } from './interface/base.entity.interface';
 
-export class DataBaseBaseEntity implements IBaseEntity {
+export class DataBaseBaseEntity extends BaseEntity implements IBaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 

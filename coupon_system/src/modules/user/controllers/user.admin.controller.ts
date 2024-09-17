@@ -25,7 +25,10 @@ export class UserAdminController {
   }
 
   @Get('/:id')
-  // @UserProtected()
+  @ApiDoc({
+    operation: 'Get User by Id',
+  })
+  @UserProtected()
   @RequestParamGuard(RequestIdDto)
   async getById(@Param('id') id: number) {
     return await this._userService.findOneByIdOrFail(id, {
