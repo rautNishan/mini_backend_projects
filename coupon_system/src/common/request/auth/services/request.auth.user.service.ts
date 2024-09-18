@@ -6,12 +6,14 @@ import { UserEntity } from 'src/modules/user/enitity/user.entity';
 import { UserCreateDto } from '../dtos/user.create.dto';
 import { UserLoginDto } from '../dtos/user.login.dto';
 import { IUserPayload } from '../interfaces/auth.interface';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class AuthService {
+export class AuthUserService {
   constructor(
     private readonly _jwtService: JwtService,
     private readonly _userService: AbstractUserService,
+    private readonly _configService: ConfigService,
   ) {}
 
   async login(incomingUser: UserLoginDto) {
@@ -26,13 +28,14 @@ export class AuthService {
       id: existingUser.id,
       role: existingUser.role,
     };
-    console.log('Payload: ', payLoad);
 
-    // const token = await this._jwtService.sign(payLoad, {
-    //   secret: 'takeitfromenv',
-    // });
+    const mySecretKey = this._configService.get<string>('auth.jwt_secret');
 
-    return 'token';
+    const token = await this._jwtService.sign(payLoad, {
+      secret: mySecretKey,
+    });
+
+    return token;
   }
 
   async checkCredentials(
