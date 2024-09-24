@@ -4,6 +4,7 @@ import {
 } from 'src/common/database/postgres/base/repository/interfaces/base.repository.interface';
 import { UserEntity } from '../enitity/user.entity';
 import { DeepPartial } from 'typeorm';
+import { PaginationQueryDto } from 'src/common/request/query/request.pagination.query';
 
 export abstract class AbstractUserService {
   /**
@@ -35,4 +36,6 @@ export abstract class AbstractUserService {
     id: number,
     options?: IFindOneOptions<UserEntity>,
   ): Promise<UserEntity>;
+
+  abstract findAll(paginationQuery?: PaginationQueryDto): Promise<UserEntity[]>;
 }

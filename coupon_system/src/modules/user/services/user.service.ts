@@ -4,9 +4,11 @@ import {
   IFindOneOptions,
 } from 'src/common/database/postgres/base/repository/interfaces/base.repository.interface';
 import { DeepPartial } from 'typeorm';
+import { AbstractUserService } from '../abstract/user.service.abstract';
 import { UserEntity } from '../enitity/user.entity';
 import { UserRepository } from '../repository/user.repository';
-import { AbstractUserService } from '../abstract/user.service.abstract';
+import { PaginationQueryDto } from 'src/common/request/query/request.pagination.query';
+import { USER_TYPE } from 'src/common/constants/user-type/user.type.constant';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -15,23 +17,28 @@ export class UserService extends AbstractUserService {
   }
 
   async create(createData: DeepPartial<UserEntity>, options?: IEntityManager) {
-    const existingUser: UserEntity | null = await this.findOneOrNull(
-      {
-        findOneOptions: {
-          where: { email: createData.email },
+    try {
+      const existingUser: UserEntity | null = await this.findOneOrNull(
+        {
+          findOneOptions: {
+            where: { email: createData.email },
+          },
         },
-      },
-      options,
-    );
-
-    if (existingUser) {
-      throw new HttpException(
-        'User already exists with that email',
-        HttpStatus.BAD_REQUEST,
+        options,
       );
-    }
 
-    return await this._userRepository.create(createData);
+      if (existingUser) {
+        throw new HttpException(
+          'User already exists with that email',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      createData.role = USER_TYPE.USER;
+      return await this._userRepository.create(createData);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   async findOneOrNull(
@@ -76,5 +83,18 @@ export class UserService extends AbstractUserService {
       throw new HttpException('Invalid user', HttpStatus.NOT_FOUND);
     }
     return existingUser;
+  }
+
+  async findAll(paginationQuery?: PaginationQueryDto): Promise<UserEntity[]> {
+    try {
+      return this._userRepository.findAll(paginationQuery, {
+        findOneOptions: {
+          select: ['id'],
+        },
+      });
+    } catch (error) {
+      console.log('This is Error: ', error);
+      throw error;
+    }
   }
 }
