@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { USER_TYPE } from 'src/common/constants/user-type/user.type.constant';
 import {
   IEntityManager,
   IFindOneOptions,
 } from 'src/common/database/postgres/base/repository/interfaces/base.repository.interface';
+import { PaginationQueryDto } from 'src/common/request/query/request.pagination.query';
 import { DeepPartial } from 'typeorm';
 import { AbstractUserService } from '../abstract/user.service.abstract';
 import { UserEntity } from '../enitity/user.entity';
 import { UserRepository } from '../repository/user.repository';
-import { PaginationQueryDto } from 'src/common/request/query/request.pagination.query';
-import { USER_TYPE } from 'src/common/constants/user-type/user.type.constant';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -87,11 +87,7 @@ export class UserService extends AbstractUserService {
 
   async findAll(paginationQuery?: PaginationQueryDto): Promise<UserEntity[]> {
     try {
-      return this._userRepository.findAll(paginationQuery, {
-        findOneOptions: {
-          select: ['id'],
-        },
-      });
+      return this._userRepository.findAll(paginationQuery);
     } catch (error) {
       console.log('This is Error: ', error);
       throw error;

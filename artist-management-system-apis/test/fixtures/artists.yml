@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  dob: 2024-10-18 13:46:58
+  gender: 1
+  address: MyString
+  first_release_year: 1
+  no_of_albums_released: 1
+  deleted_at: 2024-10-18 13:46:58
+  role: 1
+  email: MyString
+  password_digest: MyString
+
+two:
+  name: MyString
+  dob: 2024-10-18 13:46:58
+  gender: 1
+  address: MyString
+  first_release_year: 1
+  no_of_albums_released: 1
+  deleted_at: 2024-10-18 13:46:58
+  role: 1
+  email: MyString
+  password_digest: MyString

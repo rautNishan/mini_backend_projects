@@ -37,5 +37,8 @@ export abstract class AbstractUserService {
     options?: IFindOneOptions<UserEntity>,
   ): Promise<UserEntity>;
 
-  abstract findAll(paginationQuery?: PaginationQueryDto): Promise<UserEntity[]>;
+  abstract findAll<T>(
+    paginationQuery?: PaginationQueryDto,
+    options?: IFindOneOptions<T>,
+  ): Promise<UserEntity[]>;
 }

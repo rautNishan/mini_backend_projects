@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { DEFAULT_PAGINATION } from 'src/common/request/constants/request.constants';
 import { PaginationQueryDto } from 'src/common/request/query/request.pagination.query';
 import { DeepPartial, Repository } from 'typeorm';
 import { DataBaseBaseEntity } from '../entity/base.entity';
@@ -80,35 +81,30 @@ export class BaseRepository<T extends DataBaseBaseEntity>
     try {
       let sortBy: keyof T | string = 'createdAt';
       let sortOrder = 'DESC';
-      let defaultLimit = 10; //todo enum
-      let defaultSkip = 1;
-
-      //10
-      //20
-      //30 (10)
+      let defaultLimit: number;
+      let defaultSkip: number;
+      let find: any = {};
 
       if (paginationQuery) {
         sortBy = paginationQuery.sortBy ? paginationQuery.sortBy : sortBy;
         sortOrder = paginationQuery.sortOrder
           ? paginationQuery.sortOrder
           : sortOrder;
-        defaultLimit = paginationQuery?.limit;
-        defaultSkip = paginationQuery?.page;
+        defaultLimit =
+          paginationQuery?.limit ?? DEFAULT_PAGINATION.DEFAULT_LIMIT;
+        defaultSkip = paginationQuery?.page ?? DEFAULT_PAGINATION.DEFAULT_PAGE;
       }
-      const find: any = {};
+
+      if (options?.findOneOptions) {
+        find = { ...options.findOneOptions };
+      }
 
       find.order = {
         [sortBy]: sortOrder ?? 'DESC',
       };
 
-      if (options.findOneOptions.select) {
-        find.select = options.findOneOptions.select;
-      }
-
       find.take = Number(defaultLimit);
       find.skip = defaultSkip * defaultLimit - defaultLimit;
-
-      console.log('🚀 ~ find:', find);
 
       return await this._repo.find(find);
     } catch (error) {

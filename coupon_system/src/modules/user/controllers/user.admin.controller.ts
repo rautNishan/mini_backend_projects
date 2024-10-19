@@ -33,8 +33,9 @@ export class UserAdminController {
   @Get('/list')
   async list(@Query() paginationQuery?: PaginationQueryDto) {
     try {
-      console.log('Incoming Request');
-      return await this._userService.findAll(paginationQuery);
+      const find: any = {};
+      find.where = {};
+      return await this._userService.findAll(paginationQuery, find);
     } catch (error) {
       console.log('This is Error: ', error);
     }
