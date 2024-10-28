@@ -2,6 +2,7 @@ class Api::V1::Admin::AdminSuperUserAuthController < ApplicationController
   include UserProtected
   def login
     begin
+      puts "Incoming Request"
       existing_user=authenticate_user(user_params[:email], user_params[:password])
       if !existing_user.nil?
         payload = { id: existing_user[:id], email: existing_user[:email], role: existing_user[:role]  }

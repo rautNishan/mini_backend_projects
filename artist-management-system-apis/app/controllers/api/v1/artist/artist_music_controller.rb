@@ -3,8 +3,13 @@ class Api::V1::Artist::ArtistMusicController < ApplicationController
   # List all Super Users with manual pagination
   def list
     @music_repo=MusicRepository.new
+    @album_repo=AlbumRepository.new
     authenticated_user=get_user
-    repo= @music_repo.list(options: { page: params[:page], per_page: params[:per_page], deleted_at: params[:deleted_at], select: [ "id", "title", "artist_id", "album_name", "genre" ], search_fields: [ "title", "artist_id", "album_name", "genre" ], search: params[:search], join_options: [], where: { artist_id: authenticated_user[:id] } })
+    existing_album=@album_repo.findOneDeletedFalseMultipleConditions(id: params[:id], artist_id: [ authenticated_user[:id] ])
+    if existing_album.nil?
+      raise ErrorHelper::Error.new(404, "Album Not Found")
+    end
+    repo= @music_repo.list(options: { page: params[:page], per_page: params[:per_page], deleted_at: params[:deleted_at], select: [ "id", "title",  "genre" ], search_fields: [ "title" ], search: params[:search], join_options: [], where: { album_id: existing_album[:id] }, sort_order: params[:sortOrder], sortable_fields: [ "id", "title" ], sort_by: params[:sortBy] })
     @success_message ="Data Retrived Successfully"
     render json: repo
   end
@@ -14,8 +19,13 @@ class Api::V1::Artist::ArtistMusicController < ApplicationController
     begin
     @music_repo=MusicRepository.new
     authenticated_user=get_user
-    music_by_id=@music_repo.findById(params[:id], options: { where: { artist_id: authenticated_user[:id] } })
+    music_by_id=@music_repo.findById(params[:id], options: {})
     if music_by_id.nil?
+      raise ErrorHelper::Error.new(404, "Music not found")
+    end
+    @album_repo=AlbumRepository.new
+    existing_album_by_music=@album_repo.findOneDeletedFalseMultipleConditions(id: music_by_id[:album_id], artist_id: authenticated_user[:id])
+    if existing_album_by_music.nil?
       raise ErrorHelper::Error.new(404, "Music not found")
     end
     @success_message ="Fetched Music By Id"
@@ -31,7 +41,8 @@ class Api::V1::Artist::ArtistMusicController < ApplicationController
       @music_repo=MusicRepository.new
       @music_repo.transaction do
         @album_repo=AlbumRepository.new
-        existing_album=@album_repo.findOneDeletedFalse(:id, music_params[:album_id])
+        auth_user=get_user
+        existing_album=@album_repo.findOneDeletedFalseMultipleConditions(id: music_params[:album_id], artist_id: auth_user[:id])
         if existing_album.nil?
           raise ErrorHelper::Error.new(404, "Album not found")
         end

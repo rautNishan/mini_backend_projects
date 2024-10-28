@@ -3,7 +3,14 @@ class Api::V1::Admin::AdminSuperUserArtistManagerController < ApplicationControl
   # List all Super Users with manual pagination
   def list
     @artist_manager_repo=ArtistManagerRepository.new
-    repo= @artist_manager_repo.list(options: { page: params[:page], per_page: params[:per_page], deleted_at: params[:deleted_at], select: [ "id", "first_name", "last_name", "email", "phone", "gender" ], search_fields: [ "first_name", "last_name", "email", "phone" ], search: params[:search], join_options: [] })
+    repo= @artist_manager_repo.list(options: { page: params[:page], per_page: params[:per_page], deleted_at: params[:deleted_at], select: [ "id", "first_name", "last_name", "email", "phone", "gender", "dob", "address" ], search_fields: [ "first_name", "last_name", "email", "phone" ], search: params[:search], join_options: [], sort_by: params[:sortBy], sort_order: params[:sortOrder], sortable_fields: [ "id", "created_at", "phone", "email" ] })
+    @success_message ="Data Retrived Successfully"
+    render json: repo
+  end
+
+  def listDeletedOnly
+    @artist_manager_repo=ArtistManagerRepository.new
+    repo= @artist_manager_repo.listOnlyDeleted(options: { page: params[:page], per_page: params[:per_page], select: [ "id", "first_name", "last_name", "email", "phone", "gender", "dob", "address"  ], search_fields: [ "first_name", "last_name", "phone", "email" ], search: params[:search], join_options: [], sort_by: params[:sortBy], sort_order: params[:sortOrder], sortable_fields: [ "id", "created_at", "phone", "email" ] })
     @success_message ="Data Retrived Successfully"
     render json: repo
   end
@@ -27,7 +34,8 @@ class Api::V1::Admin::AdminSuperUserArtistManagerController < ApplicationControl
   def create
     begin
       validateUserConflit(user_params[:email], user_params[:phone])
-      gender_value = GenderEnum::GENDERS[user_params[:gender].to_s.downcase.to_sym] if user_params[:gender].present?
+      gender_key = user_params[:gender].to_s.downcase.to_sym
+      gender_value = GenderEnum::GENDERS[gender_key] || GenderEnum::GENDERS[:others]
       updated_params = user_params.merge(role: ArtistManager.roles[:artistManager], deleted_at: nil, gender: gender_value)
       @artist_manager_repo=ArtistManagerRepository.new
       user = @artist_manager_repo.create(updated_params)

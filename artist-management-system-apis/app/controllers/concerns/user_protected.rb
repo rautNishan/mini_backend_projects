@@ -11,6 +11,7 @@ module UserProtected
 
         define_method(action) do |*args|
           token = request.headers["Authorization"]
+          puts "This is Token : #{token}"
           if !token
             raise ErrorHelper::Error.new(403, "Access denied: Please Login")
           end

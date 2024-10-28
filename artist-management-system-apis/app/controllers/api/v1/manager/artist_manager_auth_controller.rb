@@ -20,6 +20,13 @@ class Api::V1::Manager::ArtistManagerAuthController < ApplicationController
     render json: user_details
   end
 
+  def infoMe
+    @manager_repo=ArtistManagerRepository.new
+    my_id=get_user
+    my_info=@manager_repo.findById(my_id[:id])
+    render json: my_info, serializer: ArtistManagerSerializer
+  end
+
   def user_params
     params.require(:manager).permit(:email, :password)
   end
@@ -34,5 +41,5 @@ class Api::V1::Manager::ArtistManagerAuthController < ApplicationController
     end
   end
 
-  protected_action :authMe
+  protected_action :authMe, :infoMe
 end

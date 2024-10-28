@@ -28,7 +28,9 @@ end
   def create
     begin
       validateUserConflit(user_params[:email], user_params[:phone])
-      gender_value = GenderEnum::GENDERS[user_params[:gender].to_s.downcase.to_sym] if user_params[:gender].present?
+      gender_key = user_params[:gender].to_s.downcase.to_sym
+      gender_value = GenderEnum::GENDERS[gender_key] || GenderEnum::GENDERS[:others]
+      puts "This is Gender Value #{gender_value}"
       updated_params = user_params.merge(role: SuperAdmin.roles[:superAdmin], deleted_at: nil, gender: gender_value)
       @super_admin_repo = SuperAdminRepository.new
       user = @super_admin_repo.create(updated_params)
@@ -124,5 +126,5 @@ end
     params.require(:superAdmin).permit(:first_name, :last_name, :password, :phone, :gender, :dob, :address)
   end
 
-  protected_action :create, :update, :softDelete, :hardDelete, :restore, :getById, :list
+  protected_action :update, :softDelete, :hardDelete, :restore, :getById, :list
 end

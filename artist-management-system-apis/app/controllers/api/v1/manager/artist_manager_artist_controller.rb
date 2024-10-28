@@ -3,7 +3,15 @@ class Api::V1::Manager::ArtistManagerArtistController < ApplicationController
   # List all Users with manual pagination
   def list
     @artist_repo=ArtistRepository.new
-    repo= @artist_repo.list(options: { page: params[:page], per_page: params[:per_page], deleted_at: params[:deleted_at], select: [ "id", "name", "email", "gender", "address", "first_release_year", "no_of_albums_released" ], search_fields: [ "first_name", "last_name", "email", "phone" ], search: params[:search], join_options: [] })
+    repo= @artist_repo.list(options: { page: params[:page], per_page: params[:per_page], deleted_at: params[:deleted_at], select: [ "id", "name", "email", "gender", "dob", "address", "first_release_year", "no_of_albums_released" ], search_fields: [ "name", "email" ], search: params[:search], join_options: [], sort_by: params[:sortBy], sort_order: params[:sortOrder], sortable_fields: [ "id", "created_at", "email,no_of_albums_released" ] })
+    @success_message ="Data Retrived Successfully"
+    render json: repo
+  end
+
+  def listDeletedOnly
+    @artist_repo=ArtistRepository.new
+    repo= @artist_repo.listOnlyDeleted(options: { page: params[:page], per_page: params[:per_page], select: [ "id", "name", "email", "gender", "dob", "address", "first_release_year", "no_of_albums_released" ], search_fields: [ "name", "email" ], search: params[:search], join_options: [], sort_by: params[:sortBy], sort_order: params[:sortOrder], sortable_fields: [ "id", "created_at", "email,no_of_albums_released" ] })
+    puts "THis is Data: #{repo.inspect}"
     @success_message ="Data Retrived Successfully"
     render json: repo
   end
@@ -119,7 +127,6 @@ class Api::V1::Manager::ArtistManagerArtistController < ApplicationController
     begin
       puts "Request Success"
       if params[:file].nil?
-        puts "Yes Params Is Nil"
         raise ErrorHelper::Error.new(400, "No CSV file uploaded")
       end
 
@@ -146,5 +153,5 @@ class Api::V1::Manager::ArtistManagerArtistController < ApplicationController
   end
 
 
-  protected_action :create, :update, :softDelete, :restore, :list, :createByCsv, :downloadCsv, :getById
+  protected_action :create, :update, :softDelete, :restore, :list, :createByCsv, :downloadCsv, :getById, :listDeletedOnly
 end
