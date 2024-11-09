@@ -7,6 +7,7 @@ import { UserProtected } from 'src/common/request/decorators/request.user-protec
 import { RequestIdDto } from 'src/common/request/query/request.param.id.dto';
 import { AbstractUserService } from '../abstract/user.service.abstract';
 import { PaginationQueryDto } from 'src/common/request/query/request.pagination.query';
+import { UserEntity } from '../enitity/user.entity';
 
 @ApiTags('User')
 @Controller({
@@ -35,7 +36,7 @@ export class UserAdminController {
     try {
       const find: any = {};
       find.where = {};
-      return await this._userService.findAll(paginationQuery, find);
+      return await this._userService.findAll<UserEntity>(paginationQuery, find);
     } catch (error) {
       console.log('This is Error: ', error);
     }

@@ -2,7 +2,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-          /*
+        /*
              LazyInitialization
              Only create when ask for.
          */
@@ -39,5 +39,44 @@ public class Main {
         else{
             System.out.println("Something went wrong while creating thread safe singleton class");
         }
+
+        /*
+             Double Check Locking
+             Similar to lazy initialization but also ensure single-ton is thread-safe
+        */
+
+        DoubleChecked doubleCheck =DoubleChecked.getInstance();
+        System.out.println("This is doubleCheck: "+doubleCheck);
+
+        DoubleChecked doubleCheck2 =DoubleChecked.getInstance();
+        System.out.println("This is doubleCheck: "+doubleCheck2);
+
+        //Both should give the same memory address
+        if(doubleCheck==doubleCheck2){
+            System.out.println("Complete DoubleChecked Singleton");
+        }
+        else{
+            System.out.println("Something went wrong while creating DoubleChecked singleton class");
+        }
+
+         /*
+             Eager Initializing Locking
+             Similar to lazy initialization but also ensure single-ton is thread-safe
+        */
+
+        EagerInitialization eagerInitialization =EagerInitialization.getInstance();
+        System.out.println("This is eagerInitialization: "+eagerInitialization);
+
+        EagerInitialization eagerInitialization2 =EagerInitialization.getInstance();
+        System.out.println("This is eagerInitialization2: "+eagerInitialization2);
+
+        //Both should give the same memory address
+        if(eagerInitialization==eagerInitialization2){
+            System.out.println("Complete EagerInitialization Singleton");
+        }
+        else{
+            System.out.println("Something went wrong while creating EagerInitialization singleton class");
+        }
+
     }
 }
