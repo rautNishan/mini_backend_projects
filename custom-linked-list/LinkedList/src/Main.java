@@ -1,5 +1,16 @@
+import SinglyLinkedList.SinglyLinkedList;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("This is LinkedList");
+        SinglyLinkedList list=new SinglyLinkedList();
+
+        list.insertFirst(2);
+        list.insertFirst(1);
+        list.insertLast(3);
+        list.insertLast(4);
+
+        list.display();
+        System.out.println();
+        System.out.println("This is the size of my linked list: "+list.getSize());
     }
 }
