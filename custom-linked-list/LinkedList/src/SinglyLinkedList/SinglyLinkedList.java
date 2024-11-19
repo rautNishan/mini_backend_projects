@@ -15,6 +15,7 @@ public class SinglyLinkedList {
 
         public Node(int value, Node next){
             this.value=value;
+            System.out.println("This is next value: "+next.value);
             this.next=next;
         }
     }
@@ -54,6 +55,31 @@ public class SinglyLinkedList {
         this.tail.next=newNode;
         this.tail=newNode;
         this.size++;
+    }
+
+    public void insert(int value,int index){
+        if(index>this.size){
+            throw new IndexOutOfBoundsException("This is the actual size: "+this.size);
+        }
+
+
+        if(index==1){
+            this.insertFirst(value);
+            return;
+        }
+
+        if(index==this.size){
+            this.insertLast(value);
+            return;
+        }
+
+        Node tempNode=this.head;
+        for(int i=1;i<index-1;i++){
+            tempNode=tempNode.next;
+        }
+        this.size++;
+        Node newNode=new Node(value,tempNode.next);
+        tempNode.next=newNode;
     }
 
 

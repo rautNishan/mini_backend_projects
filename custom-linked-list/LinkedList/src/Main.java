@@ -8,9 +8,9 @@ public class Main {
         list.insertFirst(1);
         list.insertLast(3);
         list.insertLast(4);
-
-        list.display();
-        System.out.println();
+        list.insert(5,2);
         System.out.println("This is the size of my linked list: "+list.getSize());
+        list.display();
+        System.out.println("New Line");
     }
 }
