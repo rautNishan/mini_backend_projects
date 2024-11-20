@@ -82,5 +82,24 @@ public class SinglyLinkedList {
         tempNode.next=newNode;
     }
 
+    public void deleteFromFirst(){
+
+        if(this.tail==null){
+            //Or can throw error
+            return;
+        }
+
+        this.size--;
+        if(this.head.next==null){
+            this.head=null;
+            this.tail=null;
+            return;
+        }
+
+        Node headNode=this.head;
+        this.head=headNode.next;
+        headNode=null;
+    }
+
 
 }
