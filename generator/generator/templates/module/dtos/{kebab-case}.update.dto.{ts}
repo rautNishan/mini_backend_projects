@@ -1,0 +1,4 @@
+import { PartialType } from '@nestjs/swagger';
+import { {PascalCase}CreateDto } from './{kebab-case}.create.dto';
+
+export class {PascalCase}UpdateDto extends PartialType({PascalCase}CreateDto) {}

@@ -1,0 +1,32 @@
+import { Expose } from 'class-transformer';
+import { DatabaseBaseEntity } from 'src/common/database/base/entity/BaseEntity';
+import { ALL_GROUP } from 'src/common/database/constant/serialization-group.constant';
+import { Column, Entity, Index } from 'typeorm';
+import { I{PascalCase} } from '../../interfaces/{kebab-case}.interface';
+import { SYSTEM_PREFIX } from 'src/common/database/constant/prefix';
+
+export const TABLE_NAME = '{snake_case}';
+@Entity({ name: TABLE_NAME })
+export class {PascalCase}Entity extends DatabaseBaseEntity implements I{PascalCase} {
+  // ======================
+  // Columns===============
+  // ======================
+
+
+  @Expose({ groups: ALL_GROUP })
+  @Index()
+  @Column({ type: 'varchar', length: 255, unique: true })
+  name: string;
+
+  // ======================
+  // Computed columns======
+  // ======================
+  
+  // ======================
+  // Relations=============
+  // ======================
+
+  // ======================
+  // Hooks=================
+  // ======================
+}
