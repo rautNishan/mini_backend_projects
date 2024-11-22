@@ -101,5 +101,45 @@ public class SinglyLinkedList {
         headNode=null;
     }
 
+    public void deleteFromLast(){
+        if(this.head==this.tail){
+            this.deleteFromFirst();
+            return;
+        }
+
+        Node tempNode=this.head;
+        for(int i=1;i<this.size;i++){
+            tempNode=tempNode.next;
+        }
+        this.size--;
+        Node lastNode=this.tail;
+        this.tail=tempNode;
+        lastNode=null;
+    }
+
+    public void delete(int index){
+        System.out.println("This is size: "+this.size);
+        if(index==this.size){
+            deleteFromLast();
+            return;
+        }
+
+        if(this.head==this.tail || index==1){
+            deleteFromFirst();
+            return;
+        }
+
+        Node indexToDel=this.head;
+        Node tempIndex=indexToDel;
+        for(int i=1;i<index;i++){
+            tempIndex=indexToDel;
+            indexToDel=indexToDel.next;
+        }
+
+        tempIndex.next=indexToDel.next;
+        indexToDel=null;
+        this.size--;
+    }
+
 
 }
