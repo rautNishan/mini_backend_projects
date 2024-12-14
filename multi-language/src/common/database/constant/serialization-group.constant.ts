@@ -1,0 +1,19 @@
+export enum SERIALIZATION_GROUP {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
+export const DELETE_AT_FIELD_GROUP = ['DELETE_AT'];
+export const ADMIN_ONLY_GROUP = [SERIALIZATION_GROUP.ADMIN];
+export const USER_ONLY_GROUP = [SERIALIZATION_GROUP.USER];
+export const ALL_GROUP = [SERIALIZATION_GROUP.ADMIN, SERIALIZATION_GROUP.USER];
+
+/**
+ * admin and user group
+ */
+export const AC_GROUP = [SERIALIZATION_GROUP.ADMIN, SERIALIZATION_GROUP.USER];
+
+/**
+ * admin and user group
+ */
+export const CV_GROUP = [SERIALIZATION_GROUP.USER];
